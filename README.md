@@ -1,69 +1,72 @@
 # OpsPulse
 
-**Repository:** [github.com/JXzfluser/OpsPulse](https://github.com/JXzfluser/OpsPulse) · Demo tag [`v0.1.0-demo`](https://github.com/JXzfluser/OpsPulse/releases/tag/v0.1.0-demo)
+**仓库：** [github.com/JXzfluser/OpsPulse](https://github.com/JXzfluser/OpsPulse) · 演示标签 [`v0.1.0-demo`](https://github.com/JXzfluser/OpsPulse/releases/tag/v0.1.0-demo)
 
-**Issue-to-Deploy scaffold** for JDK 1.8 microservices — structured GitHub Issues, MCP tools, and CI/CD pipeline templates.
+面向 JDK 1.8 微服务的 **Issue-to-Deploy 脚手架** — 结构化 GitHub Issue、MCP 工具与 CI/CD 流水线模板。
 
-OpsPulse does not replace Cursor or your JDK8 base image. It provides the **contract + workflow glue** between Issue intake, Agent development, build, deploy, and status feedback.
+OpsPulse 不替代 Cursor 或你的 JDK8 基础镜像，而是提供 Issue  intake、Agent 开发、构建、部署与状态回写之间的 **契约 + 工作流胶水**。
 
-## Three-layer delivery model
+## 三层交付模型
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  Layer 1: JDK 8 base image (enterprise runtime)         │
+│  Layer 1: JDK 8 基础镜像（企业运行时）                    │
 │  registry.example.com/platform/jdk8-base:1.0            │
 └─────────────────────────────────────────────────────────┘
                           ↓ FROM
 ┌─────────────────────────────────────────────────────────┐
-│  Layer 2: Microservice repo (order-service, etc.)       │
-│  Maven/Gradle build → jar                               │
+│  Layer 2: 微服务仓库（order-service 等）                 │
+│  Maven/Gradle 构建 → jar                                │
 └─────────────────────────────────────────────────────────┘
                           ↓ COPY artifact
 ┌─────────────────────────────────────────────────────────┐
-│  Layer 3: Service image / deploy unit                   │
+│  Layer 3: 服务镜像 / 部署单元                            │
 │  registry.example.com/order-service:issue-45-abc        │
 └─────────────────────────────────────────────────────────┘
 ```
 
-## Quick start (30 seconds)
+## 快速开始（约 30 秒）
 
 ```bash
-# 1. Verify environment
+# 1. 验证环境
 ./scripts/check-prerequisites.sh
 
-# 2. Validate an example Issue
+# 2. 校验示例 Issue
 python scripts/validate-issue-spec.py examples/issues/001-order-service-feature.md
 
-# 3. Run pipeline skeleton (echo stages)
+# 3. 运行流水线骨架（echo 各阶段）
 ./local-runner/run-pipeline.sh pr-validation --issue-file examples/issues/001-order-service-feature.md
 ```
 
-Copy `.env.example` → `.env` and set `GITHUB_PAT` before MCP setup (Phase 2).
+复制 `.env.example` → `.env` 并设置 `GITHUB_PAT` 后再进行 MCP 配置（Phase 2）。
 
-## What's in this repo (Phase 1–2 MVP)
+完整本地演示见 [快速入门](docs/quickstart.md)。
 
-| Component | Path | Status |
-|-----------|------|--------|
+## 仓库内容（Phase 1–2 MVP）
+
+| 组件 | 路径 | 状态 |
+|------|------|------|
 | Issue Spec Schema | `schemas/issue-spec.v1.json` | ✅ |
-| Example Issues | `examples/issues/` | ✅ |
-| GitHub Issue templates | `.github/ISSUE_TEMPLATE/` | ✅ |
+| 示例 Issue | `examples/issues/` | ✅ |
+| GitHub Issue 模板 | `.github/ISSUE_TEMPLATE/` | ✅ |
 | Schema CI | `.github/workflows/validate-schema.yml` | ✅ |
-| Pipeline skeleton | `harness-templates/`, `local-runner/` | ✅ placeholder |
-| MCP server | `mcp-server/` | ✅ |
+| 流水线骨架 | `harness-templates/`, `local-runner/` | ✅ 占位 |
+| MCP 服务 | `mcp-server/` | ✅ |
 
-> **No `sample-backend/`** — demo uses `examples/issues/` + `examples/fixtures/` (D11).
+> **无 `sample-backend/`** — 演示使用 `examples/issues/` + `examples/fixtures/`（D11）。
 
-## Documentation
+## 文档
 
-| Doc | Description |
-|-----|-------------|
-| [用户接入指南](doc/用户接入指南.md) | How to fork templates into your microservice repo |
-| [技术架构](doc/技术架构.md) | MCP, Issue parsing, Harness stages |
-| [实施计划](doc/实施计划.md) | Phase 0–2 execution plan |
-| [MCP setup](docs/mcp-setup.md) | Cursor + github-mcp-server configuration |
-| [Harness setup](docs/harness-setup.md) | Optional enterprise CI/CD integration |
+| 文档 | 说明 |
+|------|------|
+| [用户接入指南](doc/用户接入指南.md) | 如何将模板 fork 到微服务仓库 |
+| [技术架构](doc/技术架构.md) | MCP、Issue 解析、Harness 阶段 |
+| [实施计划](doc/实施计划.md) | Phase 0–2 执行计划 |
+| [MCP 配置](docs/mcp-setup.md) | Cursor + github-mcp-server 配置 |
+| [快速入门](docs/quickstart.md) | 本地 E2E 与验证清单 |
+| [Harness 配置](docs/harness-setup.md) | 可选的企业 CI/CD 集成 |
 
-## Architecture flow
+## 架构流程
 
 ```
 GitHub Issue (opspulse:auto)
@@ -76,8 +79,8 @@ GitHub Issue (opspulse:auto)
 
 ## License
 
-Apache License 2.0 — see [LICENSE](LICENSE).
+Apache License 2.0 — 见 [LICENSE](LICENSE)。
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+见 [CONTRIBUTING.md](CONTRIBUTING.md)。
