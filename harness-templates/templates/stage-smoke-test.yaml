@@ -1,0 +1,10 @@
+# Stage template: Smoke Test
+# Health check and acceptance criteria gate
+
+stage:
+  name: Smoke Test
+  identifier: smoke_test
+  type: CI
+  description: |
+    Run acceptance criteria from Issue Spec.
+    Example: GET /actuator/health returns UP.

@@ -1,0 +1,10 @@
+# Stage template: JDK Base Verify (Layer 1)
+# Pull and verify enterprise JDK8 runtime base image
+
+stage:
+  name: JDK Base Verify
+  identifier: jdk_base_verify
+  type: CI
+  description: |
+    docker pull $JDK_BASE_IMAGE
+    Verify manifest and JDK 8 tag. OpsPulse references Layer 1; does not rebuild it.

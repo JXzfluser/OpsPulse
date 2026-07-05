@@ -1,0 +1,40 @@
+---
+description: OpsPulse Issue-to-Deploy agent rules for JDK 8 microservices
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# OpsPulse Agent Rules
+
+## Workflow order
+
+1. **Parse first** — Call `opspulse:parse_issue` (or validate frontmatter locally) before editing code.
+2. **Respect Issue Spec** — Only modify paths listed in `affected_paths`.
+3. **Three layers** — Do not rebuild Layer 1 (JDK8 base image). Build Layer 2 (jar). Package Layer 3 (service image).
+4. **Branch + PR** — Use `github` MCP to create branch, push, and open PR.
+5. **Pipeline** — After PR, call `trigger_pipeline(pr-validation)` then `deploy-dev` on success.
+6. **Status** — Call `update_issue_status` with acceptance results.
+
+## JDK 8 constraints
+
+- Target JDK **1.8** only (`build.jdk: "1.8"`).
+- Dockerfile pattern: `FROM ${JDK_BASE_IMAGE}` + `COPY` artifact — never embed a full JDK download in service Dockerfile.
+- Use `runtime.jdk_base_image` from Issue Spec or `opspulse.yaml` defaults.
+
+## Bugfix gate
+
+- `type: bugfix` requires reproduction steps in Issue body.
+- Do not start auto-dev if `parse_issue` returns `ready=false`.
+
+## What not to do
+
+- Do not add `sample-backend/` to OpsPulse repo (D11).
+- Do not commit secrets (`.env`, PAT, registry credentials).
+- Do not skip acceptance criteria validation before marking `deployed`.
+
+## References
+
+- Schema: `schemas/issue-spec.v1.json`
+- Prompts: `prompts/issue-to-code.md`, `prompts/pipeline-troubleshoot.md`
+- User guide: `doc/用户接入指南.md`

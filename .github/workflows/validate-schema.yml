@@ -1,0 +1,36 @@
+name: Validate Issue Spec
+
+on:
+  pull_request:
+    paths:
+      - "examples/issues/**"
+      - "schemas/**"
+      - "scripts/validate-issue-spec.py"
+      - ".github/workflows/validate-schema.yml"
+  push:
+    branches: [main, master]
+    paths:
+      - "examples/issues/**"
+      - "schemas/**"
+      - "scripts/validate-issue-spec.py"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install jsonschema pyyaml pytest
+
+      - name: Validate example issues
+        run: |
+          python scripts/validate-issue-spec.py examples/issues/*.md
+
+      - name: Run unit tests
+        run: pytest scripts/tests/ -v

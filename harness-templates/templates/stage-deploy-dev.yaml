@@ -1,0 +1,10 @@
+# Stage template: Deploy Dev
+# Update Dev environment (Compose / K8s) with new service image
+
+stage:
+  name: Deploy Dev
+  identifier: deploy_dev
+  type: CI
+  description: |
+    Deploy Layer 3 service image to Dev.
+    local-runner: docker compose up -d

@@ -1,0 +1,10 @@
+# Stage template: Microservice Build (Layer 2)
+# Execute build.command from Issue Spec in JDK 8 environment
+
+stage:
+  name: Microservice Build
+  identifier: microservice_build
+  type: CI
+  description: |
+    Run Issue Spec build.command (maven | gradle).
+    MVP demo: SKIP_BUILD=1 uses examples/fixtures/app.jar.

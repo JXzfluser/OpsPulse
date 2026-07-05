@@ -1,0 +1,65 @@
+name: Auto Dev — Bugfix
+description: Bug report with OpsPulse Issue Spec and mandatory reproduction steps
+title: "[Bugfix] "
+labels:
+  - opspulse:auto
+  - type:bugfix
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bugfix issues require **reproduction steps** in the body.
+        See [examples/issues/002-user-service-bugfix.md](examples/issues/002-user-service-bugfix.md).
+
+  - type: textarea
+    id: frontmatter
+    attributes:
+      label: Issue Spec (YAML frontmatter)
+      description: Paste the YAML block (without --- delimiters).
+      value: |
+        opspulse_version: "1"
+        type: bugfix
+        scope: api
+        service:
+          name: your-service
+          module_path: services/your-service/
+        runtime:
+          jdk_base_image: registry.example.com/platform/jdk8-base:1.0
+        build:
+          tool: maven
+          jdk: "1.8"
+          command: mvn -pl services/your-service -am package -DskipTests
+          artifact: services/your-service/target/your-service.jar
+        deploy:
+          dockerfile: deploy/your-service/Dockerfile
+          image: registry.example.com/your-service
+          env: dev
+        acceptance:
+          - id: AC-1
+            given: "bug is fixed and service redeployed"
+            then: "reproduction steps no longer trigger the failure"
+        affected_paths:
+          - services/your-service/src/main/java/**
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Numbered steps to reproduce the bug (required for bugfix auto-dev)
+      value: |
+        ## 复现步骤
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background
+      description: Impact and observed behavior
+    validations:
+      required: true

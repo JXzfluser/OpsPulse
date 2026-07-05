@@ -1,0 +1,11 @@
+version: "1"
+defaults:
+  runtime:
+    jdk_base_image: eclipse-temurin:8-jre   # local demo; use enterprise image in production
+  build:
+    jdk: "1.8"
+    tool: maven
+  deploy:
+    env: dev
+pipeline:
+  default_mode: local   # local | github-actions | harness

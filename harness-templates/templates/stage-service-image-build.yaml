@@ -1,0 +1,10 @@
+# Stage template: Service Image Build (Layer 3)
+# docker build -f deploy/<service>/Dockerfile with FROM $JDK_BASE_IMAGE
+
+stage:
+  name: Service Image Build
+  identifier: service_image_build
+  type: CI
+  description: |
+    Build service image: FROM jdk_base_image + COPY artifact.
+    Tag per deploy.tag_strategy from Issue Spec.

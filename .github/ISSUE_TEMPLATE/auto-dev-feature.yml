@@ -1,0 +1,60 @@
+name: Auto Dev — Feature
+description: Feature request with OpsPulse Issue Spec frontmatter for automated delivery
+title: "[Feature] "
+labels:
+  - opspulse:auto
+  - type:feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use YAML frontmatter per [Issue Spec v1](schemas/issue-spec.v1.json).
+        See [examples/issues/001-order-service-feature.md](examples/issues/001-order-service-feature.md).
+
+  - type: textarea
+    id: frontmatter
+    attributes:
+      label: Issue Spec (YAML frontmatter)
+      description: Paste the YAML block (without --- delimiters). Required fields are validated by CI.
+      value: |
+        opspulse_version: "1"
+        type: feature
+        scope: api
+        service:
+          name: your-service
+          module_path: services/your-service/
+        runtime:
+          jdk_base_image: registry.example.com/platform/jdk8-base:1.0
+        build:
+          tool: maven
+          jdk: "1.8"
+          command: mvn -pl services/your-service -am package -DskipTests
+          artifact: services/your-service/target/your-service.jar
+        deploy:
+          dockerfile: deploy/your-service/Dockerfile
+          image: registry.example.com/your-service
+          env: dev
+        acceptance:
+          - id: AC-1
+            given: "service builds and starts with JDK8 base image"
+            then: "GET /actuator/health returns UP"
+        affected_paths:
+          - services/your-service/src/main/java/**
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background
+      description: Why is this change needed?
+    validations:
+      required: true
+
+  - type: textarea
+    id: hints
+    attributes:
+      label: Implementation hints
+      description: Optional guidance for the Agent
+    validations:
+      required: false
