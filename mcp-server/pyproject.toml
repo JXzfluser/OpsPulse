@@ -17,6 +17,7 @@ dev = ["pytest>=8.0"]
 
 [project.scripts]
 opspulse-mcp = "opspulse_mcp.server:main"
+opspulse = "opspulse_mcp.cli:main"
 
 [build-system]
 requires = ["hatchling"]
