@@ -1,7 +1,7 @@
 # OpsPulse 路线图（ROADMAP）
 
 > **当前阶段**：Phase 2 — MVP（Gate 2 本地 E2E 完成）  
-> **最后更新**：2026-07-05
+> **最后更新**：2026-07-05（auto-setup + `v0.1.0-demo`）
 
 ---
 
@@ -10,8 +10,8 @@
 | 阶段 | 时间 | 主题 | 状态 |
 |------|------|------|------|
 | Phase 0 | 2026-07 W1–W2 | 奠基：文档、前置条件、决策锁定 | 🟡 进行中 |
-| Phase 1 | 2026-07 W3–W4 | 骨架：Git 仓库、Schema、Issue 模板 | 🟡 push 完成，CI 待绿 |
-| Phase 2 | 2026-08 W1–W4 | MVP：MCP + 流水线 + E2E | 🟢 Gate 2 本地验收通过 |
+| Phase 1 | 2026-07 W3–W4 | 骨架：Git 仓库、Schema、Issue 模板 | ✅ Gate 1 |
+| Phase 2 | 2026-08 W1–W4 | MVP：MCP + 流水线 + E2E | ✅ Gate 2 + tag `v0.1.0-demo` |
 | Phase 3 | 2026-09 – 11 | 发布：v0.1–v0.3、内容冷启动 | ⬜ 待开始 |
 | Phase 4 | 2026-12 – 2027-05 | 增长：Pro 插件、商业化 | ⬜ 待开始 |
 | Phase 5 | 2027-06 – 2027-07 | 成熟：v2.0、社区、企业定制 | ⬜ 待开始 |
@@ -55,9 +55,9 @@
 - [x] `examples/fixtures/`（JDK8 Dockerfile + README）
 - [x] `CHANGELOG.md` v0.0.1-schema
 - [x] `git push` + GitHub 上 Issue 模板可选（Gate 1 人工项）
-- [ ] `validate-schema.yml` CI 在 GitHub 绿（🟡 push 已完成，Actions 待确认/运行中）
+- [x] `validate-schema.yml` CI 在 GitHub 绿（`b8e14e8` success；docs-only push 不触发 path filter）
 
-**Gate 1**：Schema CI 校验通过；Issue 模板可在 GitHub 创建 — **git push 完成（`b8e14e8`），CI 待绿**
+**Gate 1**：Schema CI 校验通过；Issue 模板可在 GitHub 创建 — **✅（CI green @ `b8e14e8`）**
 
 ---
 
@@ -70,7 +70,7 @@
 | W7 | `trigger_pipeline` + `local-runner`（镜像模式） | ✅ pr-validation 本地通过（Docker 可选） |
 | W8 | deploy-dev + quickstart.md | ✅ `scripts/e2e-demo.sh` + `docs/quickstart.md` |
 
-**Gate 2**：Issue #1 全链路跑通（parse → 镜像流水线 → comment）；README 第三人可复现 — **本地 E2E 通过**
+**Gate 2**：Issue #1 全链路跑通（parse → 镜像流水线 → comment）；README 第三人可复现 — **✅ 本地 E2E + Docker 镜像阶段（`SKIP_BUILD=1` fixture）**
 
 > **不含 sample-backend**：E2E 用 `examples/issues/` + 基础镜像冒烟演示（见 D11）。
 

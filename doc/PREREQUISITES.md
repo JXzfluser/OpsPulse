@@ -45,7 +45,7 @@
 | Git | ≥ 2.40 | `git --version` | ✅ 2.52.0 |
 | Python | ≥ 3.11 | `python3 --version` | ✅ 3.14.4 |
 | uv | 最新 | `uv --version` | ✅ 0.10.7 |
-| Docker | ≥ 24 | `docker --version` | ⚠️ 已安装，daemon 未运行 |
+| Docker | ≥ 24 | `docker info` | ✅ OrbStack（2026-07-05 全链路验证） |
 | Java（JDK） | — | — | **不要求**（MVP 无 sample-backend） |
 | Maven | — | — | **不要求** |
 | Node.js | ≥ 20 | `node --version` | ✅ v22.23.1（可选） |
@@ -105,9 +105,9 @@
 | 项 | 完成日期 | 备注 |
 |----|----------|------|
 | 规划文档输出 | 2026-07-05 | 本次 |
-| 环境验证 | 2026-07-05 | Git/Python/uv OK；Docker daemon 待启动 |
+| 环境验证 | 2026-07-05 | 全测试绿；Docker 镜像阶段 OK；`check-prerequisites.sh` 通过 |
 | 用户访谈 #1 | | |
-| GitHub remote push | 2026-07-05 | `main` @ b8e14e8 |
+| GitHub remote push | 2026-07-05 | `main` @ 6931a54+；tag `v0.1.0-demo` |
 | Gate 0 通过 | | |
 
 ---
@@ -120,7 +120,7 @@
 | 项 | 状态 | 备注 |
 |----|------|------|
 | 初始 commit + push `main` | ✅ | https://github.com/JXzfluser/OpsPulse |
-| `validate-schema.yml` CI | 🟡 待确认 | push 后 GitHub Actions 应自动触发 |
+| `validate-schema.yml` CI | ✅ | `b8e14e8` — Validate Issue Spec success |
 | Issue 模板在 GitHub 可用 | 🟡 待人工确认 | 仓库 Settings → Features |
 | 本地 Schema 校验 | ✅ | `python3 scripts/validate-issue-spec.py examples/issues/*.md` |
 

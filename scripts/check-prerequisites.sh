@@ -38,10 +38,10 @@ check_cmd() {
 
   if [[ "${required}" == "true" ]]; then
     fail "${name}: '${cmd}' not found"
-  else
-    warn "${name}: '${cmd}' not found (optional)"
+    return 1
   fi
-  return 1
+  warn "${name}: '${cmd}' not found (optional)"
+  return 0
 }
 
 check_python_version() {

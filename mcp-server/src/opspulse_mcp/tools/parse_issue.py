@@ -5,17 +5,15 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import sys
 from pathlib import Path
 from typing import Any
 
 import httpx
 
-from opspulse_mcp.config import find_repo_root
 from opspulse_mcp.models.issue_spec import ParseIssueResult
 from opspulse_mcp.parsers.frontmatter import extract_body, extract_frontmatter
 from opspulse_mcp.parsers.label_mapper import apply_label_fallbacks
-from opspulse_mcp.parsers.validation import load_schema, validate_spec_dict
+from opspulse_mcp.parsers.validation import validate_spec_dict
 
 
 def parse_issue_markdown(

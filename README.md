@@ -1,5 +1,7 @@
 # OpsPulse
 
+**Repository:** [github.com/JXzfluser/OpsPulse](https://github.com/JXzfluser/OpsPulse) · Demo tag [`v0.1.0-demo`](https://github.com/JXzfluser/OpsPulse/releases/tag/v0.1.0-demo)
+
 **Issue-to-Deploy scaffold** for JDK 1.8 microservices — structured GitHub Issues, MCP tools, and CI/CD pipeline templates.
 
 OpsPulse does not replace Cursor or your JDK8 base image. It provides the **contract + workflow glue** between Issue intake, Agent development, build, deploy, and status feedback.
@@ -38,7 +40,7 @@ python scripts/validate-issue-spec.py examples/issues/001-order-service-feature.
 
 Copy `.env.example` → `.env` and set `GITHUB_PAT` before MCP setup (Phase 2).
 
-## What's in this repo (Phase 1)
+## What's in this repo (Phase 1–2 MVP)
 
 | Component | Path | Status |
 |-----------|------|--------|
@@ -47,7 +49,7 @@ Copy `.env.example` → `.env` and set `GITHUB_PAT` before MCP setup (Phase 2).
 | GitHub Issue templates | `.github/ISSUE_TEMPLATE/` | ✅ |
 | Schema CI | `.github/workflows/validate-schema.yml` | ✅ |
 | Pipeline skeleton | `harness-templates/`, `local-runner/` | ✅ placeholder |
-| MCP server | `mcp-server/` | Phase 2 |
+| MCP server | `mcp-server/` | ✅ |
 
 > **No `sample-backend/`** — demo uses `examples/issues/` + `examples/fixtures/` (D11).
 
