@@ -43,4 +43,4 @@ def schema_path(repo_root: Path | None = None) -> Path:
 
 def local_runner_path(repo_root: Path | None = None) -> Path:
     root = repo_root or find_repo_root()
-    return root / "local-runner" / "run-pipeline.sh"
+    return root / "internal" / "dev" / "local-runner" / "run-pipeline.sh"

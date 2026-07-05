@@ -1,50 +1,41 @@
 # Contributing to OpsPulse
 
-Thank you for helping build Issue-to-Deploy scaffolding for JDK 8 microservices.
+胶水层开源项目 — 贡献前请读 [胶水层核心能力](doc/胶水层核心能力.md)。
 
-## Before you start
-
-1. Read [doc/用户接入指南.md](doc/用户接入指南.md) for the three-layer delivery model.
-2. Run `scripts/check-prerequisites.sh` to verify your environment.
-3. Copy `.env.example` to `.env` (never commit `.env`).
-
-## Issue workflow
-
-- Use `.github/ISSUE_TEMPLATE/auto-dev-feature.yml` or `auto-dev-bugfix.yml`.
-- Include YAML frontmatter per `schemas/issue-spec.v1.json`.
-- Bugfix issues **must** include reproduction steps (`## 复现步骤` or `## Reproduction Steps`).
-- Validate locally:
+## 开发环境
 
 ```bash
-python scripts/validate-issue-spec.py examples/issues/001-order-service-feature.md
+./scripts/check-prerequisites.sh
+cp .env.example .env   # 勿提交 .env
+cd mcp-server && uv sync --extra dev
 ```
 
-## Pull request process
+## Issue / PR
 
-1. Fork and create a feature branch from `main`.
-2. Keep changes focused; avoid unrelated refactors.
-3. Ensure `validate-schema` CI passes.
-4. Fill out the PR template checklist.
-5. Link the related Issue.
+- 使用 `.github/ISSUE_TEMPLATE/` 模板，frontmatter 符合 `schemas/issue-spec.v1.json`
+- bugfix 必须含 `## 复现步骤`
+- 校验：`python scripts/validate-issue-spec.py examples/issues/001-order-service-feature.md`
+- 勿向本仓添加 `sample-backend/`（D11）
 
-## Code conventions
+## 仓库布局
 
-- **Docs in Chinese** live under `doc/` (planning, guides).
-- **Code and config** use English (README, scripts, YAML, JSON Schema).
-- No `sample-backend/` in this repository (see D11 in `doc/DECISIONS.md`).
-- Minimal, focused diffs — match existing style.
+| 路径 | 用途 |
+|------|------|
+| `mcp-server/` | 核心 MCP（三 Tool） |
+| `schemas/` | Issue Spec |
+| `examples/issues/` | 参考工单 |
+| `prompts/` | Agent 指令 |
+| `internal/dev/` | 维护者自测（local-runner、fixtures） |
+| `internal/optional/` | Harness 可选模板 |
+| `docs/getting-started.md` | **唯一用户上手文档** |
 
-## Development layout
+## 自测
 
-| Path | Purpose |
-|------|---------|
-| `schemas/` | Issue Spec JSON Schema |
-| `scripts/` | Validation and prerequisite checks |
-| `examples/issues/` | Reference Issue markdown files |
-| `harness-templates/` | Pipeline stage placeholders |
-| `local-runner/` | Local CI skeleton |
-| `mcp-server/` | Phase 2 — FastMCP tools |
+```bash
+./scripts/e2e-demo.sh
+cd mcp-server && uv run pytest tests/ -q
+```
 
-## Questions
+## 问题
 
-Open a GitHub Issue with the `question` label or refer to `doc/实施计划.md`.
+GitHub Issue 标签 `question`，或查阅 `doc/internal/实施计划.md`。

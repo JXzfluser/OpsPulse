@@ -37,4 +37,4 @@ alwaysApply: true
 
 - Schema: `schemas/issue-spec.v1.json`
 - Prompts: `prompts/issue-to-code.md`, `prompts/pipeline-troubleshoot.md`
-- User guide: `doc/用户接入指南.md`
+- User guide: `docs/getting-started.md`

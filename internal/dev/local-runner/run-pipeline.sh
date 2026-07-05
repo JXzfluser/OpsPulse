@@ -3,7 +3,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
+DEV_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 PIPELINE=""
 ISSUE_FILE=""
@@ -24,8 +25,8 @@ Environment:
   SERVICE_NAME        Microservice name
   SKIP_BUILD          Set to 1 to skip Maven build (MVP fixture mode)
   ARTIFACT_PATH       Path to jar when SKIP_BUILD=1
-  DOCKERFILE_PATH     Service Dockerfile path (default: examples/fixtures/deploy/order-service/Dockerfile)
-  BUILD_CONTEXT       Docker build context (default: examples/fixtures)
+  DOCKERFILE_PATH     Service Dockerfile path (default: internal/dev/fixtures/deploy/order-service/Dockerfile)
+  BUILD_CONTEXT       Docker build context (default: internal/dev/fixtures)
 EOF
 }
 
@@ -83,9 +84,9 @@ fi
 JDK_BASE_IMAGE="${JDK_BASE_IMAGE:-eclipse-temurin:8-jre}"
 SERVICE_NAME="${SERVICE_NAME:-order-service}"
 SKIP_BUILD="${SKIP_BUILD:-1}"
-ARTIFACT_PATH="${ARTIFACT_PATH:-${REPO_ROOT}/examples/fixtures/app.jar}"
-DOCKERFILE_PATH="${DOCKERFILE_PATH:-${REPO_ROOT}/examples/fixtures/deploy/order-service/Dockerfile}"
-BUILD_CONTEXT="${BUILD_CONTEXT:-${REPO_ROOT}/examples/fixtures}"
+ARTIFACT_PATH="${ARTIFACT_PATH:-${DEV_ROOT}/fixtures/app.jar}"
+DOCKERFILE_PATH="${DOCKERFILE_PATH:-${DEV_ROOT}/fixtures/deploy/order-service/Dockerfile}"
+BUILD_CONTEXT="${BUILD_CONTEXT:-${DEV_ROOT}/fixtures}"
 
 echo "OpsPulse local-runner"
 echo "  pipeline: ${PIPELINE}"
@@ -181,7 +182,7 @@ stage_smoke_test() {
   if OPSPULSE_SERVICE_IMAGE="opspulse/${SERVICE_NAME}:local" \
      OPSPULSE_JDK_BASE_IMAGE="${JDK_BASE_IMAGE}" \
      OPSPULSE_ARTIFACT_PATH="${ARTIFACT_PATH}" \
-     bash "${REPO_ROOT}/scripts/smoke-test.sh"; then
+     bash "${DEV_ROOT}/smoke-test.sh"; then
     emit_stage "smoke_test" "success" "smoke checks passed"
   else
     emit_stage "smoke_test" "failed" "smoke checks failed"

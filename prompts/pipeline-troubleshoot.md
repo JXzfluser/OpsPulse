@@ -1,6 +1,6 @@
 # Pipeline Troubleshoot Prompt
 
-Use when `trigger_pipeline` fails or `local-runner/run-pipeline.sh` exits non-zero.
+Use when `trigger_pipeline` fails or `internal/dev/local-runner/run-pipeline.sh` exits non-zero.
 
 ## Input
 
@@ -27,7 +27,7 @@ Use when `trigger_pipeline` fails or `local-runner/run-pipeline.sh` exits non-ze
 
 - Verify JDK 8 and Maven/Gradle on CI agent
 - Check `build.command` paths match `service.module_path`
-- MVP: set `SKIP_BUILD=1` and `ARTIFACT_PATH=examples/fixtures/app.jar`
+- MVP: set `SKIP_BUILD=1`（维护者自测，见 `internal/dev/fixtures/`）
 
 ### service_image_build
 

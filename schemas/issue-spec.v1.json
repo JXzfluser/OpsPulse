@@ -172,6 +172,50 @@
         "minLength": 1
       },
       "description": "Glob paths the agent may modify; recommended for feature/bugfix."
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "name"],
+      "properties": {
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "description": "GitHub repository owner (user or org)."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "GitHub repository name."
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Git branch or tag for workflow_dispatch (default: main)."
+        }
+      },
+      "description": "Target business repository for CI and status comments."
+    },
+    "ci": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "workflow": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Workflow file name, e.g. cicd.yml"
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "workflow_dispatch inputs passed to GitHub Actions."
+        }
+      },
+      "description": "Per-issue CI override; merges with opspulse.yaml repository defaults."
     }
   }
 }

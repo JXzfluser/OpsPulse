@@ -4,6 +4,39 @@ All notable changes to OpsPulse are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased] — v0.3.0 真 CI
+
+### Added
+
+- `trigger_pipeline` **`mode=github-actions`** — `workflow_dispatch` 触发目标仓已有 CI
+- Issue Spec 可选字段：`repository`、`ci`
+- `opspulse.yaml` → `pipeline.github_actions.repositories` 映射（含 chuanplus `cicd.yml` 示例）
+- `update_issue_status` 支持 **post GitHub Issue Comment**（`--owner --repo --issue-number`）
+- `scripts/opspulse.sh` — `handle` / `parse` / `trigger` / `status` 单入口
+- `.github/workflows/opspulse-pr-validation.yml` — OpsPulse 仓可 dispatch 演示 workflow
+- `examples/issues/004-chuanplus-gateway.md` — 零侵入业务仓试点样例
+
+## [Unreleased] — v0.2.0 胶水收敛
+
+### Added
+
+- `doc/胶水层核心能力.md` — 产品北极星（三动词 + 四引擎）
+- `docs/getting-started.md` — 唯一用户上手文档
+- `internal/README.md` — 维护者自测说明
+
+### Changed
+
+- **BREAKING（布局）**：`local-runner/`、`fixtures/` → `internal/dev/`；`harness-templates/` → `internal/optional/`
+- README 重写：三动词入口，业务仓零侵入
+- `doc/ROADMAP.md` 按 v0.2–v1.0 真胶水路径重规划
+- D4 决策修订：默认 CI 为 GHA，local-runner 仅维护者自测
+
+### Removed
+
+- `scripts/bootstrap-to-repo.sh`、`scripts/onboard-local.sh`、`scripts/remove-bootstrap.sh`
+- `docs/quickstart.md`、`docs/本地接入引导.md`（合并入 getting-started）
+- 规划文档移至 `doc/internal/`
+
 ## [0.1.0-demo] - 2026-07-05
 
 ### Added

@@ -7,6 +7,7 @@ import json
 import sys
 from typing import Any
 
+from opspulse_mcp.github.client import GitHubError, create_issue_comment
 from opspulse_mcp.models.issue_spec import IssueState
 
 VALID_STATES: set[str] = {
@@ -87,6 +88,10 @@ def update_issue_status(
     acceptance_results: list[dict[str, Any]] | None = None,
     spec: dict[str, Any] | None = None,
     error_message: str | None = None,
+    owner: str | None = None,
+    repo: str | None = None,
+    issue_number: int | None = None,
+    dry_run: bool = False,
 ) -> dict[str, Any]:
     service_name = None
     jdk_base_image = None
@@ -97,6 +102,9 @@ def update_issue_status(
         service_name = service.get("name")
         jdk_base_image = runtime.get("jdk_base_image")
         acceptance = spec.get("acceptance")
+        repository = spec.get("repository") or {}
+        owner = owner or repository.get("owner")
+        repo = repo or repository.get("name")
 
     comment_body = build_status_comment(
         state,
@@ -108,7 +116,23 @@ def update_issue_status(
         acceptance_results=acceptance_results,
         error_message=error_message,
     )
-    return {"state": state, "comment_body": comment_body}
+
+    result: dict[str, Any] = {"state": state, "comment_body": comment_body}
+
+    if dry_run or not (owner and repo and issue_number is not None):
+        result["posted"] = False
+        return result
+
+    try:
+        comment = create_issue_comment(owner, repo, issue_number, comment_body)
+        result["posted"] = True
+        result["comment_url"] = comment.get("html_url")
+        result["comment_id"] = comment.get("id")
+    except GitHubError as exc:
+        result["posted"] = False
+        result["errors"] = [str(exc)]
+
+    return result
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -126,6 +150,9 @@ def main(argv: list[str] | None = None) -> int:
         metavar="ID:passed|failed",
         help="Acceptance result, e.g. AC-1:passed",
     )
+    parser.add_argument("--owner", help="GitHub owner for posting comment")
+    parser.add_argument("--repo", help="GitHub repo for posting comment")
+    parser.add_argument("--issue-number", type=int, help="GitHub issue number for posting comment")
     args = parser.parse_args(argv)
 
     acceptance_results: list[dict[str, Any]] = []
@@ -150,10 +177,17 @@ def main(argv: list[str] | None = None) -> int:
         pipeline_url=args.pipeline_url,
         acceptance_results=acceptance_results or None,
         spec=spec,
+        owner=args.owner,
+        repo=args.repo,
+        issue_number=args.issue_number,
+        dry_run=args.dry_run,
     )
 
-    if args.dry_run:
-        print(result["comment_body"])
+    if args.dry_run or not result.get("posted"):
+        if args.dry_run:
+            print(result["comment_body"])
+        else:
+            print(json.dumps(result, indent=2, ensure_ascii=False))
     else:
         print(json.dumps(result, indent=2, ensure_ascii=False))
     return 0

@@ -4,7 +4,7 @@ set -euo pipefail
 
 SERVICE_IMAGE="${OPSPULSE_SERVICE_IMAGE:-}"
 JDK_BASE_IMAGE="${OPSPULSE_JDK_BASE_IMAGE:-eclipse-temurin:8-jre}"
-ARTIFACT_PATH="${OPSPULSE_ARTIFACT_PATH:-examples/fixtures/app.jar}"
+ARTIFACT_PATH="${OPSPULSE_ARTIFACT_PATH:-internal/dev/fixtures/app.jar}"
 
 echo "OpsPulse smoke test"
 echo "  artifact: ${ARTIFACT_PATH}"

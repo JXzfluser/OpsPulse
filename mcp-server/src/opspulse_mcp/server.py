@@ -30,6 +30,28 @@ def parse_issue(
 
 
 @mcp.tool()
+def trigger_pipeline(
+    pipeline_id: str,
+    issue_file: str | None = None,
+    owner: str | None = None,
+    repo: str | None = None,
+    ref: str | None = None,
+    mode: str | None = None,
+    variables: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    """Trigger pr-validation or deploy-dev via GitHub Actions or local dev runner."""
+    return _trigger_pipeline(
+        pipeline_id,  # type: ignore[arg-type]
+        issue_file=issue_file,
+        owner=owner,
+        repo=repo,
+        ref=ref,
+        mode=mode,  # type: ignore[arg-type]
+        variables=variables,
+    )
+
+
+@mcp.tool()
 def update_issue_status(
     state: str,
     pr_url: str | None = None,
@@ -37,8 +59,12 @@ def update_issue_status(
     acceptance_results: list[dict[str, Any]] | None = None,
     spec: dict[str, Any] | None = None,
     error_message: str | None = None,
+    owner: str | None = None,
+    repo: str | None = None,
+    issue_number: int | None = None,
+    dry_run: bool = False,
 ) -> dict[str, Any]:
-    """Generate structured Markdown comment for Issue delivery status."""
+    """Generate and optionally post structured Markdown comment on GitHub Issue."""
     return _update_issue_status(
         state,  # type: ignore[arg-type]
         pr_url=pr_url,
@@ -46,24 +72,10 @@ def update_issue_status(
         acceptance_results=acceptance_results,
         spec=spec,
         error_message=error_message,
-    )
-
-
-@mcp.tool()
-def trigger_pipeline(
-    pipeline_id: str,
-    issue_file: str | None = None,
-    ref: str | None = None,
-    mode: str = "local",
-    variables: dict[str, str] | None = None,
-) -> dict[str, Any]:
-    """Run pr-validation or deploy-dev via local-runner."""
-    return _trigger_pipeline(
-        pipeline_id,  # type: ignore[arg-type]
-        issue_file=issue_file,
-        ref=ref,
-        mode=mode,  # type: ignore[arg-type]
-        variables=variables,
+        owner=owner,
+        repo=repo,
+        issue_number=issue_number,
+        dry_run=dry_run,
     )
 
 

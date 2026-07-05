@@ -1,0 +1,31 @@
+name: OpsPulse PR Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: Microservice module name
+        required: false
+        default: order-service
+      issue_number:
+        description: Related GitHub issue number
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Issue Spec examples
+        run: |
+          python3 -m pip install --quiet jsonschema pyyaml
+          python3 scripts/validate-issue-spec.py examples/issues/*.md
+
+      - name: Summary
+        run: |
+          echo "OpsPulse pr-validation completed for service=${{ inputs.service_name }}"

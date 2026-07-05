@@ -25,6 +25,8 @@ class IssueSpec(BaseModel):
     priority: str | None = None
     harness: dict[str, Any] | None = None
     affected_paths: list[str] | None = None
+    repository: dict[str, Any] | None = None
+    ci: dict[str, Any] | None = None
 
     model_config = {"extra": "forbid"}
 

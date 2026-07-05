@@ -7,7 +7,7 @@ Python FastMCP server exposing three tools for Issue-to-Deploy workflows.
 | Tool | Description |
 |------|-------------|
 | `parse_issue` | Parse Issue Spec from GitHub or local markdown file |
-| `trigger_pipeline` | Run `local-runner/run-pipeline.sh` and return stage results |
+| `trigger_pipeline` | 编排 CI（`mode=local` → `internal/dev/local-runner`；v0.3 GHA） |
 | `update_issue_status` | Generate structured Issue comment markdown |
 
 ## Quick start

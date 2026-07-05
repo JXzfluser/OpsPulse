@@ -12,7 +12,7 @@
 | **D1** | 核心场景 | Issue-to-Deploy（MCP + GitHub Issue + CI/CD） | 2026 FDE 热点；产品化率高；全链路痛点 | ✅ 锁定 |
 | **D2** | 目标用户技术栈 | **JDK 1.8 微服务**；企业提供 **JDK8 运行时基础镜像**（非整应用镜像） | 与用户实际环境一致 | ✅ 锁定 |
 | **D3** | MCP 实现 | Python 3.11 + FastMCP + 官方 github-mcp-server | 轻量、Cursor 生态成熟 | ✅ 锁定 |
-| **D4** | 默认 CI | local-runner + GitHub Actions | 降低试用门槛；Harness 为企业可选 | ✅ 锁定 |
+| **D4** | 默认 CI | **GitHub Actions**（客户已有）；`internal/dev/local-runner` 仅维护者自测；Harness 企业可选 | 真胶水不侵入业务仓 | ✅ v0.2 修订 |
 | **D5** | 企业 CI | Harness Remote YAML Template | 目标用户部分使用 Harness；模板可 fork | ✅ 锁定 |
 | **D6** | 开源协议 | Apache-2.0 | 企业友好、可商用 | ✅ 锁定 |
 | **D7** | 免费/付费边界 | 免费到 PR 测试通过；多环境/审批/合规进 Pro | 免费版完整可用；付费卖规模与合规 | ✅ 锁定 |
@@ -30,7 +30,7 @@
 |------|---------|----------|------|
 | 2026-07-05 | D1 | 原 ES 运维 MVP → Issue-to-Deploy | 用户确认新方向；FDE 热点对齐 |
 | 2026-07-05 | D4 | 明确 GHA 为默认，Harness 可选 | 降低 Gate 0 门槛 |
-| 2026-07-05 | D2,D12 | 澄清：基础镜像=JDK8 运行时底座，非整应用；微服务仍需 build+部署 | 用户反馈项目仍是微服务架构 |
+| 2026-07-05 | D4 | 默认 CI 改为 GHA 优先；local-runner 降级为 internal/dev | 胶水收敛 v0.2 |
 
 ---
 

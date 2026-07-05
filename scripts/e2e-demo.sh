@@ -13,11 +13,11 @@ echo "== 1. 解析 Issue (parse_issue) =="
 
 echo
 echo "== 2. PR 校验流水线 (pr-validation) =="
-./local-runner/run-pipeline.sh pr-validation --issue-file "${ISSUE_FILE}"
+./internal/dev/local-runner/run-pipeline.sh pr-validation --issue-file "${ISSUE_FILE}"
 
 echo
 echo "== 3. 开发环境部署 (deploy-dev) =="
-./local-runner/run-pipeline.sh deploy-dev --issue-file "${ISSUE_FILE}"
+./internal/dev/local-runner/run-pipeline.sh deploy-dev --issue-file "${ISSUE_FILE}"
 
 echo
 echo "== 4. 更新 Issue 状态 (update_issue_status, dry-run) =="

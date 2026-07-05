@@ -1,96 +1,45 @@
-# Harness Setup (Optional)
+# Harness 集成（可选）
 
-Harness integration is **optional** for MVP. Default CI uses `local-runner/` and GitHub Actions.
+Harness 为**企业可选** CI 后端，非默认路径。模板位于 `internal/optional/harness-templates/`。
 
-## When to use Harness
+默认验货路径：`trigger_pipeline` → 目标仓 **GitHub Actions**（v0.3.0）。
 
-- Enterprise teams already on Harness CD
-- Need Remote Pipeline Templates from Git
-- Multi-environment promotion (Pro: staging/prod)
+## 适用场景
 
-## Repository layout
+团队已使用 Harness，且希望 OpsPulse `trigger_pipeline` 触发 Remote Pipeline。
 
-Copy `harness-templates/` to `.harness/` in your microservice repo (or sync via CI):
+## 模板位置
 
 ```
-.harness/
-├── templates/
-│   ├── stage-validate-spec.yaml
-│   ├── stage-jdk-base-verify.yaml
-│   ├── stage-microservice-build.yaml
-│   ├── stage-service-image-build.yaml
-│   ├── stage-deploy-dev.yaml
-│   └── stage-smoke-test.yaml
+internal/optional/harness-templates/
 ├── pipeline-pr-validation.yaml
-└── pipeline-deploy-dev.yaml
+├── pipeline-deploy-dev.yaml
+└── templates/stage-*.yaml
 ```
 
-## Git Connector prerequisites
+在 Harness 控制台导入或同步，**勿**复制进每个微服务业务仓。
 
-| Requirement | Detail |
-|-------------|--------|
-| PAT scopes | `repo`, `admin:repo_hook` |
-| API access | Enabled on Harness Git connector |
-| Template storage | `.harness/` branch or path in repo |
+## 与 local-runner 对照
 
-## Pipeline variables
+| Harness 阶段 | internal/dev/local-runner |
+|--------------|---------------------------|
+| validate_spec | validate_spec |
+| jdk_base_verify | jdk_base_verify |
+| microservice_build | microservice_build |
+| service_image_build | service_image_build |
+| smoke_test | smoke_test |
 
-Map Issue Spec `harness.vars` to pipeline runtime:
+`internal/dev/local-runner` 仅供 OpsPulse 维护者自测。
 
-| Variable | Source |
-|----------|--------|
-| `JDK_BASE_IMAGE` | `runtime.jdk_base_image` |
-| `SERVICE_NAME` | `service.name` |
-| `BUILD_COMMAND` | `build.command` |
-| `ARTIFACT_PATH` | `build.artifact` |
-
-## Pipelines
-
-### pr-validation (5 stages)
-
-1. Validate Issue Spec
-2. JDK Base Verify (Layer 1)
-3. Microservice Build (Layer 2)
-4. Service Image Build (Layer 3)
-5. Smoke Test
-
-### deploy-dev (5 stages)
-
-1. Build & Package
-2. Push Service Image
-3. Deploy Dev
-4. Smoke Test
-5. Update Issue
-
-Phase 1 templates contain **commented placeholders**. Replace `echo` commands when wiring Harness steps.
-
-## Trigger from OpsPulse MCP
-
-Phase 2 `trigger_pipeline` supports `mode=harness`:
+## MCP 调用
 
 ```json
-{
-  "pipeline_id": "pr-validation",
-  "mode": "harness",
-  "variables": {
-    "JDK_BASE_IMAGE": "registry.example.com/platform/jdk8-base:1.0",
-    "SERVICE_NAME": "order-service"
-  }
-}
+trigger_pipeline(pipeline_id="pr-validation", mode="harness", ...)
 ```
 
-## Local equivalent
+`mode=harness` 在 v0.3.0 前未实现；当前仅 `mode=local`（开发自测）。
 
-| Harness stage | local-runner |
-|---------------|--------------|
-| validate_spec | `scripts/validate-issue-spec.py` |
-| jdk_base_verify | `docker pull $JDK_BASE_IMAGE` |
-| microservice_build | `build.command` or `SKIP_BUILD=1` |
-| service_image_build | `docker build` |
-| deploy_dev | `docker compose up -d` |
-| smoke_test | health / acceptance script |
+## 参考
 
-## References
-
-- [技术架构](../doc/技术架构.md) §6
-- [Harness Remote Pipeline Templates](https://developer.harness.io/docs/platform/pipelines/harness-yaml-quickstart/)
+- [Harness Remote Pipeline](https://developer.harness.io/docs/platform/pipelines/harness-yaml-quickstart/)
+- [胶水层核心能力](../doc/胶水层核心能力.md)
