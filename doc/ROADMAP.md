@@ -10,7 +10,7 @@
 | 阶段 | 时间 | 主题 | 状态 |
 |------|------|------|------|
 | Phase 0 | 2026-07 W1–W2 | 奠基：文档、前置条件、决策锁定 | 🟡 进行中 |
-| Phase 1 | 2026-07 W3–W4 | 骨架：Git 仓库、Schema、Issue 模板 | 🟡 代码完成，Gate 1 待验证 |
+| Phase 1 | 2026-07 W3–W4 | 骨架：Git 仓库、Schema、Issue 模板 | 🟡 push 完成，CI 待绿 |
 | Phase 2 | 2026-08 W1–W4 | MVP：MCP + 流水线 + E2E | 🟢 Gate 2 本地验收通过 |
 | Phase 3 | 2026-09 – 11 | 发布：v0.1–v0.3、内容冷启动 | ⬜ 待开始 |
 | Phase 4 | 2026-12 – 2027-05 | 增长：Pro 插件、商业化 | ⬜ 待开始 |
@@ -42,7 +42,7 @@
 
 ## Phase 1：骨架（W3–W4）
 
-- [x] 初始化 Git 仓库（`git init` 完成；GitHub remote 待人工添加）
+- [x] 初始化 Git 仓库 + `origin` → https://github.com/JXzfluser/OpsPulse.git（2026-07-05 push `main`）
 - [x] `README.md`（定位 + 架构 + 快速开始）
 - [x] `LICENSE`（Apache-2.0）+ `CONTRIBUTING.md`
 - [x] `.github/ISSUE_TEMPLATE/` + PR 模板
@@ -54,10 +54,10 @@
 - [x] `.cursor/mcp.json` + `prompts/` + `docs/mcp-setup.md` + `docs/harness-setup.md`
 - [x] `examples/fixtures/`（JDK8 Dockerfile + README）
 - [x] `CHANGELOG.md` v0.0.1-schema
-- [ ] `git push` + GitHub 上 Issue 模板可选（Gate 1 人工项）
-- [ ] `validate-schema.yml` CI 在 GitHub 绿（需 push 后验证）
+- [x] `git push` + GitHub 上 Issue 模板可选（Gate 1 人工项）
+- [ ] `validate-schema.yml` CI 在 GitHub 绿（🟡 push 已完成，Actions 待确认/运行中）
 
-**Gate 1**：Schema CI 校验通过；Issue 模板可在 GitHub 创建 — **本地验收通过，远程待 push**
+**Gate 1**：Schema CI 校验通过；Issue 模板可在 GitHub 创建 — **git push 完成（`b8e14e8`），CI 待绿**
 
 ---
 
