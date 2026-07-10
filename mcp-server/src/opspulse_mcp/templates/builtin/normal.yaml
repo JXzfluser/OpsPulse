@@ -1,0 +1,48 @@
+name: "标准开发流程"
+description: "设计→编码→PR→CI→部署"
+icon: "⚡"
+stages:
+  - id: parse
+    name: "解析 Spec"
+    auto: true
+    command: "parse_issue"
+    timeout: 300
+    
+  - id: design
+    name: "技术方案设计"
+    auto: false
+    command: "ops_design"
+    timeout: 3600
+    requires_approval: true
+    
+  - id: code_implement
+    name: "编写代码"
+    auto: true
+    command: "implement_code"
+    timeout: 7200
+    
+  - id: pr_create
+    name: "创建 PR"
+    auto: true
+    command: "ops_create_pr"
+    timeout: 300
+    
+  - id: ci_trigger
+    name: "触发 CI"
+    auto: true
+    command: "trigger_ci"
+    timeout: 1800
+    wait: true
+    
+  - id: deploy
+    name: "部署"
+    auto: false
+    command: "ops_deploy"
+    timeout: 1800
+    requires_approval: true
+    
+  - id: status_update
+    name: "回写状态"
+    auto: true
+    command: "update_issue_status"
+    timeout: 60

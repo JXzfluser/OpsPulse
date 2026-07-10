@@ -16,6 +16,7 @@ from opspulse_mcp.tools.ops_breakdown import ops_breakdown as _ops_breakdown
 from opspulse_mcp.tools.ops_create_pr import ops_create_pr as _ops_create_pr
 from opspulse_mcp.tools.ops_smoke_test import ops_smoke_test as _ops_smoke_test
 from opspulse_mcp.tools.ops_deploy import ops_deploy as _ops_deploy
+from opspulse_mcp.tools.ops_code_agent import ops_code_agent as _ops_code_agent
 
 mcp = FastMCP("opspulse")
 
@@ -154,54 +155,96 @@ def ops_breakdown(
 @mcp.tool()
 def ops_create_pr(
     issue_number: int,
-    branch: str,
-    title: str,
-    body: str,
     owner: str,
     repo: str,
+    branch: str | None = None,
+    title: str | None = None,
+    body: str | None = None,
+    spec: dict[str, Any] | None = None,
+    breakdown: list[dict[str, Any]] | None = None,
+    design_summary: str | None = None,
+    commit_contents: list[dict[str, str]] | None = None,
 ) -> dict[str, Any]:
-    """自动创建 PR 并关联 Issue。"""
+    """自动创建 PR 并关联 Issue（含分支管理 + PR 描述生成 + 代码提交）。"""
     return _ops_create_pr(
         issue_number=issue_number,
+        owner=owner,
+        repo=repo,
         branch=branch,
         title=title,
         body=body,
-        owner=owner,
-        repo=repo,
+        spec=spec,
+        breakdown=breakdown,
+        design_summary=design_summary,
+        commit_contents=commit_contents,
     )
 
 
 @mcp.tool()
 def ops_smoke_test(
     issue_number: int,
-    pipeline_id: str,
     owner: str,
     repo: str,
+    branch: str | None = None,
+    health_check_url: str | None = None,
+    acceptance_criteria: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    """冒烟测试：部署到 staging 并验证 acceptance criteria。"""
+    """冒烟测试：CI 等待 + 健康检查 + AC 验证。"""
     return _ops_smoke_test(
         issue_number=issue_number,
-        pipeline_id=pipeline_id,
         owner=owner,
         repo=repo,
+        branch=branch,
+        health_check_url=health_check_url,
+        acceptance_criteria=acceptance_criteria,
     )
 
 
 @mcp.tool()
 def ops_deploy(
     issue_number: int,
-    environment: str,
-    percentage: int = 100,
-    owner: str | None = None,
-    repo: str | None = None,
+    owner: str,
+    repo: str,
+    environment: str = "prod",
+    gray_percentage: int | None = None,
+    health_check_url: str | None = None,
+    rollback_on_failure: bool = True,
 ) -> dict[str, Any]:
     """灰度/全量部署，支持自动回滚。"""
     return _ops_deploy(
         issue_number=issue_number,
-        environment=environment,
-        percentage=percentage,
         owner=owner,
         repo=repo,
+        environment=environment,
+        gray_percentage=gray_percentage,
+        health_check_url=health_check_url,
+        rollback_on_failure=rollback_on_failure,
+    )
+
+
+@mcp.tool()
+def ops_code_agent(
+    issue_number: int,
+    owner: str,
+    repo: str,
+    spec: dict[str, Any],
+    agent: str = "claude-code",
+    design_summary: str | None = None,
+    breakdown: list[dict[str, Any]] | None = None,
+    workdir: str | None = None,
+    custom_command: list[str] | None = None,
+) -> dict[str, Any]:
+    """AI 编码桥接：自动调用 AI Agent（Claude Code / Codex / 自定义）完成编码任务。"""
+    return _ops_code_agent(
+        issue_number=issue_number,
+        owner=owner,
+        repo=repo,
+        spec=spec,
+        design_summary=design_summary,
+        breakdown=breakdown,
+        agent=agent,
+        workdir=workdir,
+        custom_command=custom_command,
     )
 
 

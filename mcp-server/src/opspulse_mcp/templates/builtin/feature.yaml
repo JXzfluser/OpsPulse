@@ -1,0 +1,54 @@
+name: "大型功能开发"
+description: "拆分→并行→集成→全面测试"
+icon: "🏗️"
+stages:
+  - id: parse
+    name: "解析 Spec"
+    auto: true
+    command: "parse_issue"
+    timeout: 300
+    
+  - id: design
+    name: "技术方案设计"
+    auto: false
+    command: "ops_design"
+    timeout: 7200
+    requires_approval: true
+    
+  - id: breakdown
+    name: "任务拆分"
+    auto: true
+    command: "ops_breakdown"
+    timeout: 3600
+    
+  - id: coding_parallel
+    name: "并行编码"
+    auto: true
+    command: "ops_code_agent --parallel"
+    timeout: 14400
+    
+  - id: integration
+    name: "集成测试"
+    auto: true
+    command: "run_integration_tests"
+    timeout: 1800
+    
+  - id: pr_create
+    name: "创建 PR"
+    auto: true
+    command: "ops_create_pr"
+    timeout: 300
+    
+  - id: ci_trigger
+    name: "触发 CI"
+    auto: true
+    command: "trigger_ci"
+    timeout: 1800
+    wait: true
+    
+  - id: deploy
+    name: "部署"
+    auto: false
+    command: "ops_deploy"
+    timeout: 1800
+    requires_approval: true

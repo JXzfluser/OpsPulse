@@ -1,0 +1,42 @@
+# OpsPulse 项目交付配置
+# 自动生成，勿手动编辑（使用 opspulse project edit 编辑）
+
+# 项目标识
+project:
+  name: ops-pulse
+  modules: []
+  languages: ["python"]
+
+# CI 配置
+ci:
+  backend: github-actions
+  github-actions:
+    workflow_file: .github/workflows/validate-schema.yml
+    dispatch_event: workflow_dispatch
+    inputs:
+      service: '{{ service }}'
+      issue_number: '{{ issue_number }}'
+
+# 部署配置
+deploy:
+  environments:
+    - name: dev
+      auto: true
+      health_check: http://localhost:8080/actuator/health
+    - name: staging
+      auto: false
+    - name: prod
+      auto: false
+      strategy: canary
+
+# 交付流程
+workflow:
+  stages:
+    - name: parse
+      auto: true
+    - name: pr
+      auto: false
+    - name: ci
+      auto: true
+    - name: deploy
+      auto: false

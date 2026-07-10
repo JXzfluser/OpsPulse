@@ -1,0 +1,41 @@
+name: "紧急修复"
+description: "跳过设计，直接修复+验证"
+icon: "🔥"
+stages:
+  - id: parse
+    name: "解析 Spec"
+    auto: true
+    command: "parse_issue"
+    timeout: 300
+    
+  - id: code_implement
+    name: "编写修复代码"
+    auto: true
+    command: "implement_code"
+    timeout: 3600
+    
+  - id: test_pass
+    name: "验证测试"
+    auto: true
+    command: "run_tests"
+    timeout: 600
+    
+  - id: pr_create
+    name: "创建 PR"
+    auto: true
+    command: "ops_create_pr"
+    timeout: 300
+    
+  - id: ci_trigger
+    name: "触发 CI"
+    auto: true
+    command: "trigger_ci"
+    timeout: 1800
+    wait: true
+    
+  - id: deploy
+    name: "紧急部署"
+    auto: false
+    command: "ops_deploy --hotfix"
+    timeout: 1800
+    requires_approval: true
