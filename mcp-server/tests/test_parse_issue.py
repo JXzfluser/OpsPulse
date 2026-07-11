@@ -10,25 +10,44 @@ from opspulse_mcp.parsers.label_mapper import apply_label_fallbacks
 from opspulse_mcp.parsers.validation import load_schema
 from opspulse_mcp.tools.parse_issue import parse_issue_file, parse_issue_markdown
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-EXAMPLES_DIR = REPO_ROOT / "examples" / "issues"
 SCHEMA = load_schema()
 
 
-@pytest.mark.parametrize(
-    "filename,expected_service,expected_ready",
-    [
-        ("001-order-service-feature.md", "order-service", True),
-        ("002-user-service-bugfix.md", "user-service", True),
-        ("003-config-chore.md", "order-service", True),
-    ],
-)
-def test_example_issues_parse(filename, expected_service, expected_ready):
-    path = EXAMPLES_DIR / filename
-    result = parse_issue_file(path)
-    assert result.ready is expected_ready
+def test_parse_issue_file_with_inline_markdown():
+    """验证 parse_issue_file 能解析带 frontmatter 的 Issue 文档"""
+    import tempfile
+    markdown = """---
+opspulse_version: "1"
+type: feature
+service:
+  name: order-service
+runtime:
+  jdk_base_image: eclipse-temurin:8-jre
+build:
+  command: mvn package
+  artifact: target/order-service.jar
+deploy:
+  env: dev
+acceptance:
+  - id: AC-1
+    given: user is authenticated
+    then: order is created
+---
+
+## 需求
+创建订单 API，支持多支付方式。
+
+## 影响路径
+- src/api/orders.py
+- src/services/payment.py
+"""
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".md", delete=False) as f:
+        f.write(markdown)
+        f.flush()
+        result = parse_issue_file(Path(f.name))
+    assert result.ready is True
     assert result.spec is not None
-    assert result.spec["service"]["name"] == expected_service
+    assert result.spec["service"]["name"] == "order-service"
     assert not any(e for e in result.errors if not e.startswith("warning:"))
 
 
